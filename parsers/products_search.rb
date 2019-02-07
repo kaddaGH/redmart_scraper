@@ -31,8 +31,7 @@ if current_page==0 and scrape_url_nbr_products>page_size
   end
 
 else
-  nbr_products_pg1 = page['nbr_products_pg1']
-
+  nbr_products_pg1 = page['vars']['nbr_products_pg1']
 end
 
 
