@@ -37,7 +37,7 @@ products.each_with_index do |product, i|
       PRODUCT_ID: product['id'],
       PRODUCT_NAME: product['title'],
       EAN: product['sku'],
-      PRODUCT_DESCRIPTION: product['desc'],
+      PRODUCT_DESCRIPTION: product['desc'].gsub(/[\n\s]+/,'').gsub(/,/,'.'),
       PRODUCT_MAIN_IMAGE_URL: 'https://s3-ap-southeast-1.amazonaws.com/media.redmart.com/newmedia/150x' + product['img']['name'],
       PRODUCT_ITEM_SIZE: product['warehouse']['measure']['vol'],
       PRODUCT_ITEM_SIZE_UOM: product['warehouse']['measure']['vol_metric'],

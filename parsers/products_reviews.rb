@@ -23,6 +23,7 @@ products_details.each do |product_details|
   end
 
   product_details['_collection'] = 'products'
+  product_details['EXTRACTED_ON']= Time.now.to_s
   outputs << product_details
 
 
