@@ -2,7 +2,7 @@ require 'cgi'
 data = JSON.parse(content)
 scrape_url_nbr_products = data['total']
 products = data['products']
-products_details = {}
+products_details = []
 ids=[]
 products.each_with_index do |product, i|
 
@@ -51,8 +51,8 @@ end
 
 
 
-products_details[product_details[:PRODUCT_ID]] =product_details
-ids<< product_details[:PRODUCT_ID]
+products_details << product_details
+ids << product_details[:PRODUCT_ID]
 
 
 
