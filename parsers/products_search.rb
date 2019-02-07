@@ -43,6 +43,15 @@ products.each_with_index do |product, i|
   promotion = product['promotions'][0]['savings_text'] rescue ''
   pack = product['measure']['wt_or_vol'][/(.+?)(?=x)/].strip  rescue ''
   availability = product['inventories'][0]['stock_status'] == '1' ? '1' : ''
+  item_size = product['warehouse']['measure']['vol'] rescue  nil
+  if item_size.nil?
+    item_size = product['warehouse']['measure']['wt']
+  end
+
+  item_size_uom = product['warehouse']['measure']['vol_metric'] rescue nil
+  if item_size_uom.nil?
+    item_size_uom = product['warehouse']['measure']['wt_metric']
+  end
   if product['category_tags'].include? 'energy-drinks'
     category = 'energy-drinks'
   else
@@ -72,10 +81,10 @@ products.each_with_index do |product, i|
       PRODUCT_ID: product['id'],
       PRODUCT_NAME: product['title'],
       EAN: product['sku'],
-      PRODUCT_DESCRIPTION: product['desc'].gsub(/[\n\s]+/,'').gsub(/,/,'.'),
+      PRODUCT_DESCRIPTION: product['desc'].gsub(/[\n\s]+/,' ').gsub(/,/,'.'),
       PRODUCT_MAIN_IMAGE_URL: 'https://s3-ap-southeast-1.amazonaws.com/media.redmart.com/newmedia/150x' + product['img']['name'],
-      PRODUCT_ITEM_SIZE: product['warehouse']['measure']['vol']+product['warehouse']['measure']['wt'],
-      PRODUCT_ITEM_SIZE_UOM: product['warehouse']['measure']['vol_metric']+product['warehouse']['measure']['wt_metric'],
+      PRODUCT_ITEM_SIZE: item_size,
+      PRODUCT_ITEM_SIZE_UOM: item_size_uom,
       PRODUCT_ITEM_QTY_IN_PACK:pack ,
       SALES_PRICE: product['pricing']['price'],
       IS_AVAILABLE: availability,
