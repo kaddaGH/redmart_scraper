@@ -51,6 +51,12 @@ products.each_with_index do |product, i|
   if item_size_uom.nil?
     item_size_uom = product['warehouse']['measure']['wt_metric']
   end
+
+
+  price = product['pricing']['promo_price'].to_f
+  if price==0
+    price = product['pricing']['price'].to_f
+  end
   if product['category_tags'].include? 'energy-drinks'
     category = 'energy-drinks'
   else
@@ -85,7 +91,7 @@ products.each_with_index do |product, i|
       PRODUCT_ITEM_SIZE: item_size,
       PRODUCT_ITEM_SIZE_UOM: item_size_uom,
       PRODUCT_ITEM_QTY_IN_PACK:pack ,
-      SALES_PRICE: product['pricing']['price'],
+      SALES_PRICE: price,
       IS_AVAILABLE: availability,
       PROMOTION_TEXT: promotion,
 
