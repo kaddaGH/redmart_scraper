@@ -5,8 +5,8 @@ parsers:
   - page_type: products_search
     file: ./parsers/products_search.rb
     disabled: false
-  - page_type: product_details
-    file: ./parsers/product_details.rb
+  - page_type: products_reviews
+    file: ./parsers/products_reviews.rb
     disabled: false
 exporters:
   - exporter_name: products_csv
