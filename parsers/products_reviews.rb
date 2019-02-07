@@ -17,7 +17,7 @@ products_details.each do |product_details|
   product_id = product_details['PRODUCT_ID'].to_s
 
   if reviews.keys.include? product_id
-    product_details['PRODUCT_STAR_RATING'] = reviews[product_id]['AverageOverallRating'].nil? ? '' : reviews[product_id]['AverageOverallRating']
+    product_details['PRODUCT_STAR_RATING'] = reviews[product_id]['AverageOverallRating'].nil? ? '' : reviews[product_id]['AverageOverallRating'].round(2)
     product_details['PRODUCT_NBR_OF_REVIEWS'] = reviews[product_id]['TotalReviewCount']
 
   end

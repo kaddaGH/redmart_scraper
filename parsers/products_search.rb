@@ -1,13 +1,48 @@
 require 'cgi'
 data = JSON.parse(content)
-scrape_url_nbr_products = data['total']
+scrape_url_nbr_products = data['total'].to_i
+current_page = data['page'].to_i
+page_size = data['page_size'].to_i
 products = data['products']
 products_details = []
 ids = []
+
+# if ot's first page , generate pagination
+if current_page==0 and scrape_url_nbr_products>page_size
+  nbr_products_pg1 = page_size
+  step_page = 1
+  while step_page*page_size<=scrape_url_nbr_products
+    pages << {
+        page_type: 'products_search',
+        method: 'GET',
+        url: page['url']+"&page=#{step_page}",
+        vars: {
+            'input_type' => page['vars']['search'],
+            'search_term' => page['vars']['search_term'],
+            'page' => step_page,
+            'nbr_products_pg1' => nbr_products_pg1
+        }
+    }
+
+    step_page=step_page+1
+
+
+
+  end
+
+else
+  nbr_products_pg1 = page['nbr_products_pg1']
+
+end
+
+
+
+
 products.each_with_index do |product, i|
 
-  promotion = product['promotions']['savings_text'] rescue ''
-  availability = product['inventories'][0]['stock_status'] == 1 ? '1' : ''
+  promotion = product['promotions'][0]['savings_text'] rescue ''
+  pack = product['measure']['wt_or_vol'][/(.+?)(?=x)/].strip  rescue ''
+  availability = product['inventories'][0]['stock_status'] == '1' ? '1' : ''
   if product['category_tags'].include? 'energy-drinks'
     category = 'energy-drinks'
   else
@@ -29,19 +64,19 @@ products.each_with_index do |product, i|
       SCRAPE_INPUT_CATEGORY: page['vars']['input_type'] == 'taxonomy' ? category : '-',
       SCRAPE_URL_NBR_PRODUCTS: scrape_url_nbr_products,
       # - - - - - - - - - - -
-      SCRAPE_URL_NBR_PROD_PG1: scrape_url_nbr_products,
+      SCRAPE_URL_NBR_PROD_PG1:  nbr_products_pg1 ,
       # - - - - - - - - - - -
       PRODUCT_BRAND: product['filters']['brand_name'],
       PRODUCT_RANK: i + 1,
-      PRODUCT_PAGE: page['vars']['page'],
+      PRODUCT_PAGE: current_page+1,
       PRODUCT_ID: product['id'],
       PRODUCT_NAME: product['title'],
       EAN: product['sku'],
       PRODUCT_DESCRIPTION: product['desc'].gsub(/[\n\s]+/,'').gsub(/,/,'.'),
       PRODUCT_MAIN_IMAGE_URL: 'https://s3-ap-southeast-1.amazonaws.com/media.redmart.com/newmedia/150x' + product['img']['name'],
-      PRODUCT_ITEM_SIZE: product['warehouse']['measure']['vol'],
-      PRODUCT_ITEM_SIZE_UOM: product['warehouse']['measure']['vol_metric'],
-      PRODUCT_ITEM_QTY_IN_PACK: '',
+      PRODUCT_ITEM_SIZE: product['warehouse']['measure']['vol']+product['warehouse']['measure']['wt'],
+      PRODUCT_ITEM_SIZE_UOM: product['warehouse']['measure']['vol_metric']+product['warehouse']['measure']['wt_metric'],
+      PRODUCT_ITEM_QTY_IN_PACK:pack ,
       SALES_PRICE: product['pricing']['price'],
       IS_AVAILABLE: availability,
       PROMOTION_TEXT: promotion,
