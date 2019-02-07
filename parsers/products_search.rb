@@ -17,7 +17,7 @@ if current_page==0 and scrape_url_nbr_products>page_size
         method: 'GET',
         url: page['url']+"&page=#{step_page}",
         vars: {
-            'input_type' => page['vars']['search'],
+            'input_type' => page['vars']['input_type'],
             'search_term' => page['vars']['search_term'],
             'page' => step_page,
             'nbr_products_pg1' => nbr_products_pg1
