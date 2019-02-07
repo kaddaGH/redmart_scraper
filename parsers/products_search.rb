@@ -42,7 +42,10 @@ products.each_with_index do |product, i|
   promotion = product['promotions'][0]['savings_text'] rescue ''
   pack = product['measure']['wt_or_vol'][/(.+?)(?=x)/].strip  rescue ''
   availability = product['inventories'][0]['stock_status'] == '1' ? '1' : ''
-  item_size = product['warehouse']['measure']['vol']+product['warehouse']['measure']['wt'] rescue  ''
+  item_size = product['warehouse']['measure']['wt'].to_i rescue  0
+  if item_size<=0
+    item_size = product['warehouse']['measure']['vol']
+  end
   item_size_uom = product['warehouse']['measure']['vol_metric']+product['warehouse']['measure']['wt_metric'] rescue ''
   price = product['pricing']['promo_price'].to_f
   if price==0
