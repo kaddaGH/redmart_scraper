@@ -103,7 +103,7 @@ end
 pages << {
     page_type: 'products_reviews',
     method: 'GET',
-    url: "https://api.bazaarvoice.com/data/batch.json?passkey=3aqde2lhhpwod1c1ve03mx30j&apiversion=5.5&displaycode=13815-en_sg&resource.q0=statistics&filter.q0=" + CGI.escape("productid:eq:#{ids.join(',')}") + "&filter.q0=" + CGI.escape("contentlocale:eq:en,en_US,zh_SG,en_SG") + "&stats.q0=reviews&filter_reviews.q0=" + CGI.escape("contentlocale:eq:en,en_US,zh_SG,en_SG") + "&filter_reviewcomments.q0=" + CGI.escape("contentlocale:eq:en,en_US,zh_SG,en_SG") + "&limit.q0=48&callback=bv_1111_41303",
+    url: "https://api.bazaarvoice.com/data/batch.json?passkey=3aqde2lhhpwod1c1ve03mx30j&apiversion=5.5&displaycode=13815-en_sg&resource.q0=statistics&filter.q0=" + CGI.escape("productid:eq:#{ids.join(',')}") + "&filter.q0=" + CGI.escape("contentlocale:eq:en,en_US,zh_SG,en_SG") + "&stats.q0=reviews&filter_reviews.q0=" + CGI.escape("contentlocale:eq:en,en_US,zh_SG,en_SG") + "&filter_reviewcomments.q0=" + CGI.escape("contentlocale:eq:en,en_US,zh_SG,en_SG") + "&limit.q0=48&callback=bv_1111_41303&searchkeyword=#{page['vars']['search_term']}&searchpage=#{page['vars']['page']}",
     vars: {
         'products' => products_details
     }
