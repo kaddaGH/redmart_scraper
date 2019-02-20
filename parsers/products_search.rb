@@ -41,7 +41,7 @@ end
 products.each_with_index do |product, i|
 
   promotion = product['promotions'][0]['savings_text'] rescue ''
-  pack = product['measure']['wt_or_vol'][/(.+?)(?=x)/].strip  rescue ''
+  pack = product['measure']['wt_or_vol'][/(.+?)(?=x)/].strip  rescue '1'
   availability = product['inventories'][0]['stock_status'].to_i == 1 ? '1' : ''
   item_size = product['warehouse']['measure']['wt'].to_i rescue  0
   if item_size<=0
