@@ -62,6 +62,12 @@ products.each_with_index do |product, i|
 
   end
 
+  brand = product['filters']['brand_name']
+  if brand =='Red Bull' and product['filters']['country_of_origin'] == 'Vietnam'
+    brand = 'Thai Red Bull'
+  end
+
+
   product_details = {
       # - - - - - - - - - - -
       RETAILER_ID: '95',
@@ -75,7 +81,7 @@ products.each_with_index do |product, i|
       # - - - - - - - - - - -
       SCRAPE_URL_NBR_PROD_PG1:  nbr_products_pg1 ,
       # - - - - - - - - - - -
-      PRODUCT_BRAND: product['filters']['brand_name'],
+      PRODUCT_BRAND: brand,
       PRODUCT_RANK: i + 1,
       PRODUCT_PAGE: current_page+1,
       PRODUCT_ID: product['id'],
