@@ -63,7 +63,7 @@ products.each_with_index do |product, i|
   end
 
   brand = product['filters']['brand_name']
-  if brand =='Red Bull' and  ['Vietnam', 'Thailand'].include? product['filters']['country_of_origin']
+  if brand =='Red Bull' and  ['Vietnam', 'Thailand','Malaysia'].include? product['filters']['country_of_origin']
     brand = 'Thai Red Bull'
   end
 
